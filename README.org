@@ -1,0 +1,79 @@
+* GLNiman :: thin OpenGL wrapper library
+
+This is a graphics library which aims to create an easy-to-use yet
+extensible interface for interaction with *OpenGL*
+
+For now primary focus is on *2D* graphics, you can look at some of
+my project built with it:
+
++ [[https://github.com/alexpaniman/compass-and-straightedge][Compass and Straightedge]]
++ [[https://github.com/alexpaniman/mandelbrot][Mandelbrot Set Visualizer]]
++ [[https://github.com/alexpaniman/sphere-raycaster][Sphere Raycaster]]
+
+** Building
+
+*** Prerequisites
+You need to have:
+
++ ~Clang~ 
++ ~CMake~
++ ~glew~
++ ~glfw~
+
+installed on your system.
+
+On ~Arch Linux~ you can install all of them with:
+#+begin_src shell
+  pacman -Sy --needed cmake clang glew glfw
+#+end_src
+
+On ~Ubuntu~ you can install them with:
+
+#+begin_src shell
+  sudo apt-get install -y cmake clang libglew-dev libglfw3-dev
+#+end_src
+
+If you are using other distros, use your package 
+manager to look up package names, and install them.
+
+This may or may not work on ~Windows~ or ~MacOS~, but
+hasn't been tested on either.
+
+
+*** Installation
+*Clone this repository and cd into it:*
+
+#+begin_src shell
+  git clone git@github.com:alexpaniman/glniman.git
+  cd glniman
+#+end_src
+
+*Then, in your project's CMakeLists.txt add:*
+#+begin_src cmake
+  /* snip */
+
+  add_subdirectory(gl)
+  target_link_library(<your-target> gl)
+#+end_src
+
+You should be ready to go from there.
+To learn more check out examples in [[file:examples]]
+
+You can build them by switching ~GL_BUILD_EXAMPLES~:
+
+#+begin_src shell
+  cmake -B build -DCMAKE_CXX_COMPILER=clang++ -G Ninja -DCMAKE_BUILD_TYPE=Release -DGL_BUILD_EXAMPLES=ON
+#+end_src
+
+Optionally you can use ~-DCMAKE_EXPORT_COMPILE_COMMANDS=ON~ if you
+want to import this project with ~clangd~ language server.
+
+Now build and run, binaries of examples are gonna be in ~build/examples~ folder:
+#+begin_src shell
+  cmake --build build
+  ./build/examples/gl-clock
+#+end_src
+
+*You should see a clock, something like:*
+
+[[file:img/example-clock.png]]
