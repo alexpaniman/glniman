@@ -1,5 +1,6 @@
 #pragma once
 
+#include "general.h"
 #include <cmath>
 #include <concepts>
 #include <cstdlib>
@@ -529,17 +530,22 @@ namespace math {
     #undef VEC_DEDUCTION_GUIDE
 
     // Use shorthands from OpenGL
-    using vec2 = vec<float, 2>;
-    using vec3 = vec<float, 3>;
-    using vec4 = vec<float, 4>;
+    using vec2  = vec<float, 2>;
+    using vec3  = vec<float, 3>;
+    using vec4  = vec<float, 4>;
+    // TODO: maybe make them fvecs?
 
-    struct proxy_zero_vec {
-        template <typename element_type, std::size_t count>
-        constexpr operator math::vec<element_type, count>() const { // TODO: support any vector
-            return generate<element_type, count>(std::make_index_sequence<count>());
-        }
 
-    private:
+    using dvec2 = vec<double, 2>;
+    using dvec3 = vec<double, 3>;
+    using dvec4 = vec<double, 4>;
+
+    using svec2 = vec<size_t, 2>;
+    using svec3 = vec<size_t, 3>;
+    using svec4 = vec<size_t, 4>;
+
+    namespace details {
+
         template <typename element_type, std::size_t zero, std::size_t... indices>
         static constexpr math::vec<element_type, zero> generate(std::index_sequence<indices...>) {
             return { default_construct<element_type>(indices)... };
@@ -547,10 +553,20 @@ namespace math {
 
         template <typename element_type>
         static constexpr element_type default_construct(std::size_t) { return {}; }
+
+    }
+
+    template <typename element_type, std::size_t count>
+    struct zeroable<math::vec<element_type, count>> {
+
+        static constexpr math::vec<element_type, count> zero() {
+            return details::generate<element_type, count>(std::make_index_sequence<count>());
+        }
+
     };
 
-    inline constexpr proxy_zero_vec zero = {};
 
+    // TODO: move to general.h
     struct proxy_random_vec {
         template <typename element_type, std::size_t count>
         constexpr operator math::vec<element_type, count>() const {
