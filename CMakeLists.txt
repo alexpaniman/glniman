@@ -37,6 +37,8 @@ add_library(gl STATIC
 
     src/extensions/simple-drawer/drawing-manager.cpp
 
+    src/ui/widget.cpp
+
     src/math/shapes/circle.cpp
     src/math/shapes/line.cpp)
 
@@ -52,6 +54,8 @@ target_include_directories(gl PUBLIC # TODO: fix includes (just include include/
     ${CMAKE_CURRENT_SOURCE_DIR}/include/gl/extensions/renderer/
     ${CMAKE_CURRENT_SOURCE_DIR}/include/gl/extensions/simple-drawer/
     ${CMAKE_CURRENT_SOURCE_DIR}/include/gl/extensions/storage/
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/gl/ui/
 
     # Math
     ${CMAKE_CURRENT_SOURCE_DIR}/include/gl/math/
